@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimImmo - Simulateur d'Investissement Immobilier</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <span class="logo-icon">🏠</span>
+                    SimImmo
+                </a>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="#" class="nav-link active">Accueil</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">À propos</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="hero">
+        <div class="container">
+            <h1>Simulateur d'Investissement Immobilier</h1>
+            <p>Analysez la valorisation de votre bien et évaluez la rentabilité de vos investissements locatifs en France</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="tab-container">
+            <ul class="tabs">
+                <li class="tab-item active" data-tab="valorisation">Évolution de la valeur</li>
+                <li class="tab-item" data-tab="investissement">Investissement locatif</li>
+            </ul>
+            
+            <!-- Tab Valorisation -->
+            <div id="valorisation" class="tab-content active">
+                <div class="card">
+                    <h2 class="card-title">Estimation de l'évolution de la valeur d'un bien</h2>
+                    <form id="valorisation-form">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="prix-acquisition">Prix d'acquisition (€)</label>
+                                    <input type="number" id="prix-acquisition" name="prix-acquisition" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="surface">Surface (m²)</label>
+                                    <input type="number" id="surface" name="surface" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ville">Ville</label>
+                                    <select id="ville" name="ville" required>
+                                        <option value="">Sélectionnez une ville</option>
+                                        <option value="paris">Paris</option>
+                                        <option value="marseille">Marseille</option>
+                                        <option value="lyon">Lyon</option>
+                                        <option value="toulouse">Toulouse</option>
+                                        <option value="nice">Nice</option>
+                                        <option value="nantes">Nantes</option>
+                                        <option value="montpellier">Montpellier</option>
+                                        <option value="strasbourg">Strasbourg</option>
+                                        <option value="bordeaux">Bordeaux</option>
+                                        <option value="lille">Lille</option>
+                                        <option value="rennes">Rennes</option>
+                                        <option value="reims">Reims</option>
+                                        <option value="le-havre">Le Havre</option>
+                                        <option value="saint-etienne">Saint-Étienne</option>
+                                        <option value="toulon">Toulon</option>
+                                        <option value="grenoble">Grenoble</option>
+                                        <option value="dijon">Dijon</option>
+                                        <option value="angers">Angers</option>
+                                        <option value="nimes">Nîmes</option>
+                                        <option value="villeurbanne">Villeurbanne</option>
+                                        <option value="le-mans">Le Mans</option>
+                                        <option value="clermont-ferrand">Clermont-Ferrand</option>
+                                        <option value="aix-en-provence">Aix-en-Provence</option>
+                                        <option value="brest">Brest</option>
+                                        <option value="tours">Tours</option>
+                                        <option value="limoges">Limoges</option>
+                                        <option value="amiens">Amiens</option>
+                                        <option value="perpignan">Perpignan</option>
+                                        <option value="metz">Metz</option>
+                                        <option value="besancon">Besançon</option>
+                                        <option value="orleans">Orléans</option>
+                                        <option value="rouen">Rouen</option>
+                                        <option value="mulhouse">Mulhouse</option>
+                                        <option value="caen">Caen</option>
+                                        <option value="nancy">Nancy</option>
+                                        <option value="saint-denis">Saint-Denis</option>
+                                        <option value="argenteuil">Argenteuil</option>
+                                        <option value="montreuil">Montreuil</option>
+                                        <option value="roubaix">Roubaix</option>
+                                        <option value="dunkerque">Dunkerque</option>
+                                        <option value="tourcoing">Tourcoing</option>
+                                        <option value="avignon">Avignon</option>
+                                        <option value="nanterre">Nanterre</option>
+                                        <option value="poitiers">Poitiers</option>
+                                        <option value="creteil">Créteil</option>
+                                        <option value="versailles">Versailles</option>
+                                        <option value="courbevoie">Courbevoie</option>
+                                        <option value="vitry-sur-seine">Vitry-sur-Seine</option>
+                                        <option value="colombes">Colombes</option>
+                                        <option value="asnieres-sur-seine">Asnières-sur-Seine</option>
+                                        <option value="aulnay-sous-bois">Aulnay-sous-Bois</option>
+                                        <option value="pau">Pau</option>
+                                        <option value="rueil-malmaison">Rueil-Malmaison</option>
+                                        <option value="antibes">Antibes</option>
+                                        <option value="la-rochelle">La Rochelle</option>
+                                        <option value="saint-maur-des-fosses">Saint-Maur-des-Fossés</option>
+                                        <option value="calais">Calais</option>
+                                        <option value="champigny-sur-marne">Champigny-sur-Marne</option>
+                                        <option value="aubervilliers">Aubervilliers</option>
+                                        <option value="cannes">Cannes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="type-bien">Type de bien</label>
+                                    <select id="type-bien" name="type-bien" required>
+                                        <option value="">Sélectionnez un type</option>
+                                        <option value="appartement">Appartement</option>
+                                        <option value="maison">Maison</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="annee-construction">Année de construction</label>
+                                    <input type="number" id="annee-construction" name="annee-construction" min="1800" max="2025" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="duree-projection">Durée de projection (années)</label>
+                                    <input type="number" id="duree-projection" name="duree-projection" min="1" max="30" value="10" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">Calculer l'évolution</button>
+                    </form>
+                </div>
+                
+                <div id="valorisation-result" class="result-card">
+                    <div class="result-actions">
+                        <button id="valorisation-reset" class="btn btn-secondary">Nouvelle simulation</button>
+                        <button id="valorisation-pdf" class="btn btn-accent">Exporter en PDF</button>
+                    </div>
+                    <h3 class="result-title">Résultats de l'estimation</h3>
+                    <div class="result-summary">
+                        Votre bien d'une valeur initiale de <span class="result-highlight" id="initial-value">300 000 €</span> 
+                        pourrait valoir <span class="result-highlight" id="final-value">375 000 €</span> 
+                        dans <span id="projection-years">10</span> ans, 
+                        soit une évolution de <span class="result-highlight result-positive" id="value-evolution">+25%</span>.
+                    </div>
+                    
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-item-title">Prix au m²</div>
+                            <div class="result-item-value" id="price-per-sqm">5 000 €/m²</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-item-title">Évolution annuelle moyenne</div>
+                            <div class="result-item-value" id="yearly-evolution">+2.3%</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-item-title">Évolution totale</div>
+                            <div class="result-item-value" id="total-evolution">+75 000 €</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-item-title">Indice de confiance</div>
+                            <div class="result-item-value" id="confidence-index">75%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="evolution-chart"></canvas>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Facteurs d'influence sur cette projection</h4>
+                        <div class="table-responsive">
+                            <table class="table-facteurs">
+                                <thead>
+                                    <tr>
+                                        <th>Facteur</th>
+                                        <th>Influence</th>
+                                        <th>Impact</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Facteur">Dynamisme du marché à <span id="city-name">Paris</span></td>
+                                        <td data-label="Influence">Forte</td>
+                                        <td data-label="Impact">+1.8% par an</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Facteur">Évolution démographique</td>
+                                        <td data-label="Influence">Modérée</td>
+                                        <td data-label="Impact">+0.3% par an</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Facteur">Projets urbains et infrastructures</td>
+                                        <td data-label="Influence">Modérée</td>
+                                        <td data-label="Impact">+0.2% par an</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Facteur">Inflation prévue</td>
+                                        <td data-label="Influence">Moyenne</td>
+                                        <td data-label="Impact">+2.0% par an</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab Investissement -->
+            <div id="investissement" class="tab-content">
+                <div class="card">
+                    <h2 class="card-title">Simulation d'investissement locatif</h2>
+                    <form id="investissement-form">
+                        <div class="row">
+                            <div class="col">
+                                <h3>Bien immobilier</h3>
+                                <div class="form-group">
+                                    <label for="inv-prix-acquisition">Prix d'achat (€)</label>
+                                    <input type="number" id="inv-prix-acquisition" name="inv-prix-acquisition" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-frais-notaire">Frais de notaire (%)</label>
+                                    <input type="number" id="inv-frais-notaire" name="inv-frais-notaire" min="0" max="10" step="0.1" value="7.5" required>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">Les frais de notaire sont généralement entre 7% et 8% pour un bien ancien, et entre 2% et 3% pour un bien neuf.</span>
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-frais-agence">Frais d'agence (%)</label>
+                                    <input type="number" id="inv-frais-agence" name="inv-frais-agence" min="0" max="10" step="0.1" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-travaux">Montant des travaux (€)</label>
+                                    <input type="number" id="inv-travaux" name="inv-travaux" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-meuble">Type de location</label>
+                                    <select id="inv-meuble" name="inv-meuble" required>
+                                        <option value="non-meuble">Non meublée</option>
+                                        <option value="meuble">Meublée</option>
+                                        <option value="lmnp">LMNP (Loueur Meublé Non Professionnel)</option>
+                                    </select>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">Le statut LMNP permet de bénéficier d'avantages fiscaux supplémentaires mais impose des contraintes particulières.</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h3>Financement</h3>
+                                <div class="form-group">
+                                    <label for="inv-apport">Apport personnel (€)</label>
+                                    <input type="number" id="inv-apport" name="inv-apport" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-duree-pret">Durée du prêt (années)</label>
+                                    <input type="number" id="inv-duree-pret" name="inv-duree-pret" min="5" max="30" step="1" value="20" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-taux-interet">Taux d'intérêt (%)</label>
+                                    <input type="number" id="inv-taux-interet" name="inv-taux-interet" min="0" max="10" step="0.01" value="3.5" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-assurance-pret">Assurance prêt (%)</label>
+                                    <input type="number" id="inv-assurance-pret" name="inv-assurance-pret" min="0" max="5" step="0.01" value="0.35" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-frais-dossier">Frais de dossier (€)</label>
+                                    <input type="number" id="inv-frais-dossier" name="inv-frais-dossier" min="0" value="1000">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col">
+                                <h3>Location</h3>
+                                <div class="form-group">
+                                    <label for="inv-loyer-mensuel">Loyer mensuel hors charges (€)</label>
+                                    <input type="number" id="inv-loyer-mensuel" name="inv-loyer-mensuel" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-charges-recup">Charges récupérables (€/mois)</label>
+                                    <input type="number" id="inv-charges-recup" name="inv-charges-recup" min="0" value="0">
+                                    <span class="info-icon">i
+                                        <span class="tooltip">Les charges récupérables sont payées par le locataire en plus du loyer.</span>
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-vacance-locative">Vacance locative estimée (%)</label>
+                                    <input type="number" id="inv-vacance-locative" name="inv-vacance-locative" min="0" max="100" step="1" value="5">
+                                    <span class="info-icon">i
+                                        <span class="tooltip">Période pendant laquelle le bien n'est pas loué. En moyenne 5% par an.</span>
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-impaye">Risque d'impayés (%)</label>
+                                    <input type="number" id="inv-impaye" name="inv-impaye" min="0" max="100" step="1" value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-gestion-locative">Frais de gestion locative (%)</label>
+                                    <input type="number" id="inv-gestion-locative" name="inv-gestion-locative" min="0" max="100" step="0.1" value="0">
+                                    <span class="info-icon">i
+                                        <span class="tooltip">Si vous confiez la gestion à une agence, comptez entre 7% et 10% des loyers.</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h3>Charges et fiscalité</h3>
+                                <div class="form-group">
+                                    <label for="inv-taxe-fonciere">Taxe foncière annuelle (€)</label>
+                                    <input type="number" id="inv-taxe-fonciere" name="inv-taxe-fonciere" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-charges-copro">Charges de copropriété (€/an)</label>
+                                    <input type="number" id="inv-charges-copro" name="inv-charges-copro" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-entretien">Provision pour entretien (%)</label>
+                                    <input type="number" id="inv-entretien" name="inv-entretien" min="0" max="100" step="0.1" value="0.5">
+                                    <span class="info-icon">i
+                                        <span class="tooltip">Généralement 0.5% à 1% de la valeur du bien par an pour anticiper les travaux futurs.</span>
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-tranche-marginale">Tranche marginale d'imposition (%)</label>
+                                    <select id="inv-tranche-marginale" name="inv-tranche-marginale" required>
+                                        <option value="0">0% (Non imposable)</option>
+                                        <option value="11">11%</option>
+                                        <option value="30" selected>30%</option>
+                                        <option value="41">41%</option>
+                                        <option value="45">45%</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inv-regime-fiscal">Régime fiscal</label>
+                                    <select id="inv-regime-fiscal" name="inv-regime-fiscal" required>
+                                        <option value="micro-foncier">Micro-foncier</option>
+                                        <option value="reel">Régime réel</option>
+                                        <option value="micro-bic">Micro-BIC (meublé)</option>
+                                        <option value="reel-bic">Réel simplifié BIC (meublé)</option>
+                                    </select>
+                                    <span class="info-icon">i
+                                        <span class="tooltip">Le régime fiscal détermine comment vos revenus locatifs seront imposés. Le micro-foncier est simplifié mais le régime réel permet de déduire plus de charges.</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn">Calculer la rentabilité</button>
+                    </form>
+                </div>
+                
+                <div id="investissement-result" class="result-card">
+                    <div class="result-actions">
+                        <button id="investissement-reset" class="btn btn-secondary">Nouvelle simulation</button>
+                        <button id="investissement-pdf" class="btn btn-accent">Exporter en PDF</button>
+                    </div>
+                    <h3 class="result-title">Résultats de l'analyse d'investissement</h3>
+                    <div class="result-summary">
+                        Votre investissement présente une rentabilité brute de <span class="result-highlight" id="rentabilite-brute">5.2%</span> et une rentabilité nette de <span class="result-highlight" id="rentabilite-nette">3.8%</span>. Le cash-flow mensuel est <span class="result-highlight" id="cash-flow-mensuel">+120€</span>.
+                    </div>
+                    
+                    <div class="rentability-meter">
+                        <div class="rentability-value" id="rentabilite-meter-value" style="width: 65%;"></div>
+                        <div class="rentability-marker" id="rentabilite-marker" style="left: 65%;"></div>
+                    </div>
+                    <div class="rentability-labels">
+                        <span>Faible</span>
+                        <span>Moyenne</span>
+                        <span>Excellente</span>
+                    </div>
+                    
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-item-title">Coût total de l'opération</div>
+                            <div class="result-item-value" id="cout-total">215 000 €</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-item-title">Mensualité du crédit</div>
+                            <div class="result-item-value" id="mensualite-credit">850 €/mois</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-item-title">Revenus locatifs annuels</div>
+                            <div class="result-item-value" id="revenus-annuels">10 800 €</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-item-title">Cash-flow mensuel</div>
+                            <div class="result-item-value" id="cashflow-mensuel">+120 €</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="cashflow-chart"></canvas>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Détail financier de l'opération</h4>
+                        <div class="table-responsive">
+                            <table class="table-responsive-stack">
+                                <thead>
+                                    <tr>
+                                        <th>Catégorie</th>
+                                        <th>Montant</th>
+                                        <th>Fréquence</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Catégorie">Revenus locatifs</td>
+                                        <td data-label="Montant" id="detail-revenus">900 €</td>
+                                        <td data-label="Fréquence">Mensuel</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Mensualité crédit</td>
+                                        <td data-label="Montant" id="detail-credit">-850 €</td>
+                                        <td data-label="Fréquence">Mensuel</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Taxe foncière</td>
+                                        <td data-label="Montant" id="detail-taxe">-1 200 €</td>
+                                        <td data-label="Fréquence">Annuel</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Charges copropriété</td>
+                                        <td data-label="Montant" id="detail-charges">-1 800 €</td>
+                                        <td data-label="Fréquence">Annuel</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Gestion locative</td>
+                                        <td data-label="Montant" id="detail-gestion">-0 €</td>
+                                        <td data-label="Fréquence">Mensuel</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Impôt sur le revenu</td>
+                                        <td data-label="Montant" id="detail-impot">-750 €</td>
+                                        <td data-label="Fréquence">Annuel</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Taxe foncière</td>
+                                        <td data-label="Montant" id="detail-taxe">-1 200 €</td>
+                                        <td data-label="Fréquence">Annuel</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Charges copropriété</td>
+                                        <td data-label="Montant" id="detail-charges">-1 800 €</td>
+                                        <td data-label="Fréquence">Annuel</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Gestion locative</td>
+                                        <td data-label="Montant" id="detail-gestion">-0 €</td>
+                                        <td data-label="Fréquence">Mensuel</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Impôt sur le revenu</td>
+                                        <td data-label="Montant" id="detail-impot">-750 €</td>
+                                        <td data-label="Fréquence">Annuel</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Détail des coûts initiaux</h4>
+                        <div class="table-responsive">
+                            <table class="table-responsive-stack">
+                                <thead>
+                                    <tr>
+                                        <th>Catégorie</th>
+                                        <th>Montant</th>
+                                        <th>Pourcentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Catégorie">Prix d'achat</td>
+                                        <td data-label="Montant" id="detail-prix-achat"></td>
+                                        <td data-label="Pourcentage">100%</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Frais de notaire</td>
+                                        <td data-label="Montant" id="detail-notaire"></td>
+                                        <td data-label="Pourcentage" id="detail-notaire-pct"></td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Frais d'agence</td>
+                                        <td data-label="Montant" id="detail-agence"></td>
+                                        <td data-label="Pourcentage" id="detail-agence-pct"></td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Travaux</td>
+                                        <td data-label="Montant" id="detail-travaux"></td>
+                                        <td data-label="Pourcentage">-</td>
+                                    </tr>
+                                    <tr class="total-row">
+                                        <td data-label="Catégorie"><strong>Coût total</strong></td>
+                                        <td data-label="Montant" id="detail-cout-total"><strong></strong></td>
+                                        <td data-label="Pourcentage"></td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Apport personnel</td>
+                                        <td data-label="Montant" id="detail-apport"></td>
+                                        <td data-label="Pourcentage" id="detail-apport-pct"></td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Catégorie">Montant emprunté</td>
+                                        <td data-label="Montant" id="detail-emprunt"></td>
+                                        <td data-label="Pourcentage" id="detail-emprunt-pct"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Performance de l'investissement</h4>
+                        <div class="table-responsive">
+                            <table class="table-responsive-stack">
+                                <thead>
+                                    <tr>
+                                        <th>Indicateur</th>
+                                        <th>Valeur</th>
+                                        <th>Évaluation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Indicateur">Rentabilité brute</td>
+                                        <td data-label="Valeur" id="perf-renta-brute">5.2%</td>
+                                        <td data-label="Évaluation">Bonne</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Indicateur">Rentabilité nette</td>
+                                        <td data-label="Valeur" id="perf-renta-nette">3.8%</td>
+                                        <td data-label="Évaluation">Moyenne</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Indicateur">Cash-flow annuel</td>
+                                        <td data-label="Valeur" id="perf-cashflow">+1 440 €</td>
+                                        <td data-label="Évaluation">Positif</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Indicateur">Ratio d'endettement</td>
+                                        <td data-label="Valeur" id="perf-endettement">28%</td>
+                                        <td data-label="Évaluation">Excellent</td>
+                                    </tr>
+                                    <tr>
+                                        <td data-label="Indicateur">Retour sur investissement</td>
+                                        <td data-label="Valeur" id="perf-roi">15 ans</td>
+                                        <td data-label="Évaluation">Moyen</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Recommandations pour améliorer le cash-flow -->
+                    <div class="card" id="recommendations-card">
+                        <h4>Recommandations pour améliorer votre cash-flow</h4>
+                        <div class="recommendations-box">
+                            <div class="recommendations-title">
+                                <i>💡</i> Optimisations suggérées
+                            </div>
+                            <ul class="recommendations-list" id="recommendations-list">
+                                <!-- Dynamiquement généré par JavaScript -->
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Projection sur 20 ans</h4>
+                        <p>Cette projection tient compte de l'inflation, de la valorisation du bien, et de l'amortissement du prêt.</p>
+                        <div class="chart-container">
+                            <canvas id="projection-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2025 SimImmo - Simulateur d'Investissement Immobilier</p>
+                <p>Un outil d'aide à la décision pour vos projets immobiliers en France</p>
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-link">Mentions légales</a></li>
+                    <li><a href="#" class="footer-link">Politique de confidentialité</a></li>
+                    <li><a href="#" class="footer-link">Contact</a></li>
+                </ul>
+                <p class="disclaimer">Les résultats fournis par ce simulateur sont donnés à titre indicatif et ne constituent pas un conseil en investissement. Les projections de valorisation sont basées sur des données historiques et ne préjugent pas des performances futures.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chargement des bibliothèques -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="./js/data.js"></script>
+    <script src="./js/valorisation.js"></script>
+    <script src="./js/investissement.js"></script>
+    <script src="./js/exportPDF.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+</html>
