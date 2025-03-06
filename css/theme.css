@@ -1,0 +1,166 @@
+/* ======================================================
+   Thème sombre
+   ====================================================== */
+   body.dark-theme {
+    --text-color: #e9ecef;
+    --text-light: #adb5bd;
+    --border-color: #495057;
+    --background: #212529;
+    --background-light: #343a40;
+    
+    /* Couleurs neutres inversées */
+    --dark: #f8f9fa;
+    --light: #343a40;
+    --white: #212529;
+    --gray-100: #343a40;
+    --gray-200: #495057;
+    --gray-300: #6c757d;
+    --gray-800: #dee2e6;
+    --gray-900: #f8f9fa;
+    
+    /* Couleurs primaires ajustées */
+    --primary: #4361ee;
+    --primary-light: #3a56d4; /* Plus sombre en mode sombre */
+    --primary-dark: #5a73ef; /* Plus clair en mode sombre */
+}
+
+body.dark-theme header {
+    background-color: var(--background);
+    border-bottom-color: var(--border-color);
+}
+
+body.dark-theme .sun-icon {
+    display: none;
+}
+
+body.dark-theme .moon-icon {
+    display: block;
+}
+
+body.dark-theme input[type="text"],
+body.dark-theme input[type="number"],
+body.dark-theme input[type="email"],
+body.dark-theme textarea,
+body.dark-theme select {
+    background-color: var(--gray-100);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+body.dark-theme input[type="text"]:focus,
+body.dark-theme input[type="number"]:focus,
+body.dark-theme input[type="email"]:focus,
+body.dark-theme textarea:focus,
+body.dark-theme select:focus {
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+}
+
+body.dark-theme .form-section {
+    background-color: var(--gray-100);
+}
+
+body.dark-theme input[type="range"] {
+    background-color: var(--gray-300);
+}
+
+body.dark-theme .result-card {
+    background-color: var(--gray-100);
+}
+
+body.dark-theme .section-title {
+    border-bottom-color: var(--border-color);
+}
+
+body.dark-theme .section-separator {
+    background-color: var(--border-color);
+}
+
+body.dark-theme .gauge-cover {
+    background-color: var(--background);
+}
+
+body.dark-theme .projection-table th,
+body.dark-theme .comparison-table th,
+body.dark-theme .scenarios-table th {
+    background-color: var(--gray-100);
+}
+
+body.dark-theme .projection-table th,
+body.dark-theme .projection-table td,
+body.dark-theme .comparison-table th,
+body.dark-theme .comparison-table td,
+body.dark-theme .scenarios-table th,
+body.dark-theme .scenarios-table td {
+    border-color: var(--border-color);
+}
+
+body.dark-theme .breakdown-section,
+body.dark-theme .stat-card,
+body.dark-theme .property-type-card,
+body.dark-theme .saved-scenarios,
+body.dark-theme .scenario-card,
+body.dark-theme .recommendation-item {
+    background-color: var(--gray-100);
+}
+
+body.dark-theme .breakdown-item {
+    border-color: var(--gray-200);
+}
+
+body.dark-theme .breakdown-item.total {
+    border-color: var(--gray-300);
+}
+
+body.dark-theme .scenario-card {
+    background-color: var(--gray-200);
+}
+
+body.dark-theme .empty-state {
+    color: var(--gray-300);
+}
+
+body.dark-theme #themeToggle {
+    color: var(--gray-300);
+}
+
+body.dark-theme #themeToggle:hover {
+    background-color: var(--gray-200);
+}
+
+body.dark-theme .btn.secondary {
+    background-color: var(--gray-100);
+    color: var(--primary);
+}
+
+body.dark-theme .btn.secondary:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+body.dark-theme .modal-content {
+    background-color: var(--background);
+}
+
+body.dark-theme .modal-header,
+body.dark-theme .modal-footer {
+    border-color: var(--border-color);
+}
+
+/* Ajustements pour les graphiques en mode sombre */
+body.dark-theme .chart-container canvas {
+    filter: invert(0.85) hue-rotate(180deg);
+}
+
+/* Ajustements spécifiques pour la carte */
+body.dark-theme .city-map {
+    filter: invert(0.9) hue-rotate(180deg) saturate(0.8);
+}
+
+/* Transition en douceur entre les thèmes */
+body {
+    transition: background-color 0.3s ease;
+}
+
+body * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

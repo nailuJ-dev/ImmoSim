@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulateur Immobilier Complet | France</title>
+    <meta name="description" content="Simulateur immobilier complet pour le marché français : évolution de valeur et investissement locatif">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+    <link rel="stylesheet" href="./css/theme.css">
+    
+    <!-- Bibliothèques externes -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    
+    <!-- Polices -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Simulateur Immobilier</h1>
+            <div class="theme-toggle">
+                <button id="themeToggle" aria-label="Changer de thème">
+                    <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="value-simulator">Simulateur de Valeur</button>
+                <button class="tab-btn" data-tab="investment-simulator">Investissement Locatif</button>
+                <button class="tab-btn" data-tab="comparison">Comparaison</button>
+                <button class="tab-btn" data-tab="purchasing-power">Pouvoir d'Achat</button>
+            </div>
+            
+            <div class="tab-content active" id="value-simulator">
+                <h2>Simulateur d'Évolution de Valeur</h2>
+                
+                <div class="simulator-container">
+                    <div class="form-container">
+                        <form id="valueForm">
+                            <div class="form-section">
+                                <h3>Localisation</h3>
+                                
+                                <div class="map-selection-container">
+                                    <div id="cityMap" class="city-map"></div>
+                                    <div class="map-legend">
+                                        <span class="legend-item"><span class="color-box high"></span> Forte croissance</span>
+                                        <span class="legend-item"><span class="color-box medium"></span> Croissance modérée</span>
+                                        <span class="legend-item"><span class="color-box low"></span> Croissance faible</span>
+                                        <span class="legend-item"><span class="color-box negative"></span> Décroissance</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="valueCity">Ville</label>
+                                    <div class="select-wrapper">
+                                        <select id="valueCity" name="city" required>
+                                            <option value="" disabled selected>Sélectionnez une ville</option>
+                                            <!-- Options générées dynamiquement -->
+                                        </select>
+                                    </div>
+                                    <div class="field-info">
+                                        <span class="info-icon" title="Prix moyen au m²">ℹ️</span>
+                                        <span id="cityPriceInfo" class="info-text"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Caractéristiques du bien</h3>
+                                
+                                <div class="form-group">
+                                    <label for="propertyType">Type de bien</label>
+                                    <div class="select-wrapper">
+                                        <select id="propertyType" name="propertyType" required>
+                                            <option value="apartment">Appartement</option>
+                                            <option value="house">Maison</option>
+                                            <option value="studio">Studio</option>
+                                            <option value="loft">Loft</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="area">Surface (m²)</label>
+                                    <input type="number" id="area" name="area" min="9" max="1000" required placeholder="Ex: 75">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="propertyAge">Âge du bien</label>
+                                    <div class="select-wrapper">
+                                        <select id="propertyAge" name="propertyAge" required>
+                                            <option value="new">Neuf (< 5 ans)</option>
+                                            <option value="recent">Récent (5-15 ans)</option>
+                                            <option value="old">Ancien (15-50 ans)</option>
+                                            <option value="veryOld">Très ancien (> 50 ans)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="rooms">Nombre de pièces</label>
+                                    <input type="number" id="rooms" name="rooms" min="1" max="20" required placeholder="Ex: 3">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="currentValue">Valeur actuelle estimée (€)</label>
+                                    <input type="number" id="currentValue" name="currentValue" min="10000" required placeholder="Ex: 250000">
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Paramètres de simulation</h3>
+                                
+                                <div class="form-group">
+                                    <label for="projectionYears">Période de projection (années)</label>
+                                    <div class="range-slider">
+                                        <input type="range" id="projectionYears" name="projectionYears" min="1" max="30" value="10">
+                                        <span id="projectionYearsValue">10 ans</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="renovationBudget">Budget rénovation (€)</label>
+                                    <input type="number" id="renovationBudget" name="renovationBudget" min="0" value="0" placeholder="Ex: 15000">
+                                    <div class="field-info">
+                                        <span class="info-icon" title="Impact sur la valorisation">ℹ️</span>
+                                        <span class="info-text">Les rénovations peuvent valoriser votre bien.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="actions">
+                                <button type="submit" class="btn primary">Simuler l'évolution</button>
+                                <button type="reset" class="btn secondary">Réinitialiser</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="results-container" id="valueResults">
+                        <div class="results-header">
+                            <h3>Résultats de la simulation</h3>
+                            <div class="actions">
+                                <button id="valueSaveBtn" class="btn secondary">Enregistrer</button>
+                                <button id="valueExportBtn" class="btn secondary">Exporter PDF</button>
+                            </div>
+                        </div>
+                        
+                        <div class="results-overview">
+                            <div class="result-card">
+                                <div class="result-value" id="initialValueResult">---</div>
+                                <div class="result-label">Valeur initiale</div>
+                            </div>
+                            <div class="result-card highlight">
+                                <div class="result-value" id="finalValueResult">---</div>
+                                <div class="result-label">Valeur finale estimée</div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-value" id="valueGrowthResult">---</div>
+                                <div class="result-label">Évolution totale</div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-value" id="annualGrowthResult">---</div>
+                                <div class="result-label">Évolution annuelle</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <canvas id="valueChart"></canvas>
+                        </div>
+                        
+                        <div class="factors-container">
+                            <h4>Facteurs d'influence</h4>
+                            <div class="factors-grid" id="factorsGrid">
+                                <!-- Facteurs générés dynamiquement -->
+                            </div>
+                        </div>
+                        
+                        <div class="back-button">
+                            <button id="valueBackBtn" class="btn text">← Modifier les paramètres</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="investment-simulator">
+                <h2>Simulateur d'Investissement Locatif</h2>
+                
+                <div class="simulator-container">
+                    <div class="form-container">
+                        <form id="investmentForm">
+                            <div class="form-section">
+                                <h3>Bien immobilier</h3>
+                                
+                                <div class="form-group">
+                                    <label for="investCity">Ville</label>
+                                    <div class="select-wrapper">
+                                        <select id="investCity" name="city" required>
+                                            <option value="" disabled selected>Sélectionnez une ville</option>
+                                            <!-- Options générées dynamiquement -->
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="purchasePrice">Prix d'achat (€)</label>
+                                    <input type="number" id="purchasePrice" name="purchasePrice" min="10000" required placeholder="Ex: 250000">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="investArea">Surface (m²)</label>
+                                    <input type="number" id="investArea" name="area" min="9" max="1000" required placeholder="Ex: 75">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="investPropertyType">Type de bien</label>
+                                    <div class="select-wrapper">
+                                        <select id="investPropertyType" name="propertyType" required>
+                                            <option value="apartment">Appartement</option>
+                                            <option value="house">Maison</option>
+                                            <option value="studio">Studio</option>
+                                            <option value="loft">Loft</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="renovationCost">Coût des travaux (€)</label>
+                                    <input type="number" id="renovationCost" name="renovationCost" min="0" value="0" placeholder="Ex: 15000">
+                                </div>
+                                
+                                <div class="form-group checkbox-group">
+                                    <input type="checkbox" id="isFurnished" name="isFurnished">
+                                    <label for="isFurnished">Meublé</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Financement</h3>
+                                
+                                <div class="form-group">
+                                    <label for="downPayment">Apport personnel (€)</label>
+                                    <input type="number" id="downPayment" name="downPayment" min="0" required placeholder="Ex: 50000">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="loanAmount">Montant du prêt (€)</label>
+                                    <input type="number" id="loanAmount" name="loanAmount" min="0" readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="interestRate">Taux d'intérêt (%)</label>
+                                    <input type="number" id="interestRate" name="interestRate" min="0.1" max="15" step="0.01" required placeholder="Ex: 3.5">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="loanDuration">Durée du prêt (années)</label>
+                                    <div class="range-slider">
+                                        <input type="range" id="loanDuration" name="loanDuration" min="5" max="30" value="20">
+                                        <span id="loanDurationValue">20 ans</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="notaryFees">Frais de notaire (%)</label>
+                                    <input type="number" id="notaryFees" name="notaryFees" min="1" max="10" step="0.1" value="7.5" required>
+                                    <div class="field-info">
+                                        <span class="info-icon" title="Taux standard">ℹ️</span>
+                                        <span class="info-text">7-8% pour l'ancien, 2-3% pour le neuf</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Revenus locatifs</h3>
+                                
+                                <div class="form-group">
+                                    <label for="monthlyRent">Loyer mensuel (€)</label>
+                                    <input type="number" id="monthlyRent" name="monthlyRent" min="100" required placeholder="Ex: 800">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="vacancyRate">Taux de vacance locative (%)</label>
+                                    <input type="number" id="vacancyRate" name="vacancyRate" min="0" max="100" step="0.1" value="5" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="unpaidRate">Taux d'impayés (%)</label>
+                                    <input type="number" id="unpaidRate" name="unpaidRate" min="0" max="100" step="0.1" value="1" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="rentIncrease">Augmentation annuelle des loyers (%)</label>
+                                    <input type="number" id="rentIncrease" name="rentIncrease" min="0" max="10" step="0.1" value="1.5" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Charges et fiscalité</h3>
+                                
+                                <div class="form-group">
+                                    <label for="managementFees">Frais de gestion (%)</label>
+                                    <input type="number" id="managementFees" name="managementFees" min="0" max="20" step="0.1" value="0" placeholder="Ex: 7">
+                                    <div class="field-info">
+                                        <span class="info-icon" title="Gestion locative">ℹ️</span>
+                                        <span class="info-text">0% si autogestion, 7-10% avec une agence</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="propertyTax">Taxe foncière annuelle (€)</label>
+                                    <input type="number" id="propertyTax" name="propertyTax" min="0" required placeholder="Ex: 1200">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="condoFees">Charges de copropriété annuelles (€)</label>
+                                    <input type="number" id="condoFees" name="condoFees" min="0" required placeholder="Ex: 1800">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="maintenanceCost">Provision pour travaux (%)</label>
+                                    <input type="number" id="maintenanceCost" name="maintenanceCost" min="0" max="20" step="0.1" value="5" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="fiscalRegime">Régime fiscal</label>
+                                    <div class="select-wrapper">
+                                        <select id="fiscalRegime" name="fiscalRegime" required>
+                                            <option value="microFoncier">Micro-foncier</option>
+                                            <option value="reel">Régime réel</option>
+                                            <option value="lmnp">LMNP (Loueur Meublé Non Professionnel)</option>
+                                            <option value="bic">BIC (Bénéfices Industriels et Commerciaux)</option>
+                                        </select>
+                                    </div>
+                                    <div class="field-info">
+                                        <span class="info-icon" title="Régimes fiscaux">ℹ️</span>
+                                        <span class="info-text">Le régime fiscal influera sur votre imposition</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="taxBracket">Tranche marginale d'imposition (%)</label>
+                                    <div class="select-wrapper">
+                                        <select id="taxBracket" name="taxBracket" required>
+                                            <option value="0">0% (Non imposable)</option>
+                                            <option value="11">11% (Première tranche)</option>
+                                            <option value="30">30% (Deuxième tranche)</option>
+                                            <option value="41">41% (Troisième tranche)</option>
+                                            <option value="45">45% (Quatrième tranche)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="actions">
+                                <button type="submit" class="btn primary">Calculer la rentabilité</button>
+                                <button type="reset" class="btn secondary">Réinitialiser</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="results-container" id="investmentResults">
+                        <div class="results-header">
+                            <h3>Résultats de l'investissement</h3>
+                            <div class="actions">
+                                <button id="investSaveBtn" class="btn secondary">Enregistrer</button>
+                                <button id="investExportBtn" class="btn secondary">Exporter PDF</button>
+                            </div>
+                        </div>
+                        
+                        <div class="results-overview">
+                            <div class="result-card">
+                                <div class="result-value" id="totalInvestmentResult">---</div>
+                                <div class="result-label">Investissement total</div>
+                            </div>
+                            <div class="result-card highlight">
+                                <div class="result-value" id="rentabilityResult">---</div>
+                                <div class="result-label">Rentabilité brute</div>
+                            </div>
+                            <div class="result-card highlight">
+                                <div class="result-value" id="netRentabilityResult">---</div>
+                                <div class="result-label">Rentabilité nette</div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-value" id="cashflowResult">---</div>
+                                <div class="result-label">Cash-flow mensuel</div>
+                            </div>
+                        </div>
+                        
+                        <div class="results-sections">
+                            <div class="result-section" id="monthly-view">
+                                <h3 class="section-title">Détail mensuel</h3>
+                                <div class="monthly-breakdown">
+                                    <div class="breakdown-section">
+                                        <h4>Revenus mensuels</h4>
+                                        <div class="breakdown-item">
+                                            <span class="item-label">Loyer brut</span>
+                                            <span class="item-value" id="grossRentResult">---</span>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <span class="item-label">Ajustement vacance</span>
+                                            <span class="item-value negative" id="vacancyAdjustmentResult">---</span>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <span class="item-label">Ajustement impayés</span>
+                                            <span class="item-value negative" id="unpaidAdjustmentResult">---</span>
+                                        </div>
+                                        <div class="breakdown-item total">
+                                            <span class="item-label">Revenu locatif net</span>
+                                            <span class="item-value" id="netRentResult">---</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="breakdown-section">
+                                        <h4>Charges mensuelles</h4>
+                                        <div class="breakdown-item">
+                                            <span class="item-label">Mensualité du prêt</span>
+                                            <span class="item-value negative" id="loanPaymentResult">---</span>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <span class="item-label">Taxe foncière</span>
+                                            <span class="item-value negative" id="propertyTaxMonthlyResult">---</span>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <span class="item-label">Charges de copropriété</span>
+                                            <span class="item-value negative" id="condoFeesMonthlyResult">---</span>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <span class="item-label">Frais de gestion</span>
+                                            <span class="item-value negative" id="managementFeesResult">---</span>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <span class="item-label">Provision travaux</span>
+                                            <span class="item-value negative" id="maintenanceResult">---</span>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <span class="item-label">Impôts sur revenus locatifs</span>
+                                            <span class="item-value negative" id="rentalTaxResult">---</span>
+                                        </div>
+                                        <div class="breakdown-item total">
+                                            <span class="item-label">Total charges</span>
+                                            <span class="item-value negative" id="totalExpensesResult">---</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="breakdown-section">
+                                        <h4>Bilan mensuel</h4>
+                                        <div class="breakdown-item total">
+                                            <span class="item-label">Cash-flow net</span>
+                                            <span class="item-value" id="netCashflowResult">---</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="section-separator"></div>
+                            
+                            <div class="result-section" id="annual-view">
+                                <h3 class="section-title">Projection annuelle</h3>
+                                <div class="chart-container">
+                                    <canvas id="cashflowChart"></canvas>
+                                </div>
+                                
+                                <div class="financial-projection">
+                                    <h4>Projection financière sur 20 ans</h4>
+                                    <div class="projection-stats">
+                                        <div class="stat-card">
+                                            <div class="stat-value" id="valueAfter20Result">---</div>
+                                            <div class="stat-label">Valeur estimée du bien</div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-value" id="loanBalanceResult">---</div>
+                                            <div class="stat-label">Solde du crédit</div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-value" id="totalCashflowResult">---</div>
+                                            <div class="stat-label">Cash-flow cumulé</div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-value" id="totalEquityResult">---</div>
+                                            <div class="stat-label">Patrimoine constitué</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <table class="projection-table" id="projectionTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Année</th>
+                                                <th>Valeur du bien</th>
+                                                <th>Solde du crédit</th>
+                                                <th>Cash-flow annuel</th>
+                                                <th>Cash-flow cumulé</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Généré dynamiquement -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="section-separator"></div>
+                            
+                            <div class="result-section" id="recommendations">
+                                <h3 class="section-title">Recommandations et optimisations</h3>
+                                <div class="rentability-gauge">
+                                    <div class="gauge-container">
+                                        <div class="gauge" id="rentabilityGauge">
+                                            <div class="gauge-fill"></div>
+                                            <div class="gauge-cover">
+                                                <span id="gaugeValue">0%</span>
+                                            </div>
+                                        </div>
+                                        <div class="gauge-labels">
+                                            <span>Faible</span>
+                                            <span>Moyen</span>
+                                            <span>Bon</span>
+                                            <span>Excellent</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="recommendations-list" id="recommendationsList">
+                                    <!-- Généré dynamiquement -->
+                                </div>
+                                
+                                <div class="optimization-scenarios">
+                                    <h4>Scénarios d'optimisation</h4>
+                                    <table class="scenarios-table" id="scenariosTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Scénario</th>
+                                                <th>Impact sur le cash-flow</th>
+                                                <th>Impact sur la rentabilité</th>
+                                                <th>Facilité de mise en œuvre</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Généré dynamiquement -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="back-button">
+                            <button id="investBackBtn" class="btn text">← Modifier les paramètres</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="comparison">
+                <h2>Comparaison de Scénarios</h2>
+                
+                <div class="comparison-container">
+                    <div class="saved-scenarios" id="savedScenarios">
+                        <h3>Scénarios enregistrés</h3>
+                        <div class="scenarios-list" id="scenariosList">
+                            <div class="empty-state">
+                                Aucun scénario enregistré. Utilisez les simulateurs et cliquez sur "Enregistrer" pour comparer différents scénarios.
+                            </div>
+                            <!-- Scénarios générés dynamiquement -->
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-results" id="comparisonResults">
+                        <h3>Tableau comparatif</h3>
+                        <div class="comparison-options">
+                            <button id="compareValueBtn" class="btn secondary active">Comparer les valeurs</button>
+                            <button id="compareInvestBtn" class="btn secondary">Comparer les investissements</button>
+                        </div>
+                        
+                        <div class="comparison-table-container">
+                            <table class="comparison-table" id="comparisonTable">
+                                <thead>
+                                    <tr>
+                                        <th>Scénario</th>
+                                        <th>Ville</th>
+                                        <th>Type</th>
+                                        <th>Surface</th>
+                                        <th>Valeur</th>
+                                        <th>Évolution</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Généré dynamiquement -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <canvas id="comparisonChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="purchasing-power">
+                <h2>Calculateur de Pouvoir d'Achat Immobilier</h2>
+                
+                <div class="simulator-container">
+                    <div class="form-container">
+                        <form id="purchasingPowerForm">
+                            <div class="form-section">
+                                <h3>Revenus et capacité d'emprunt</h3>
+                                
+                                <div class="form-group">
+                                    <label for="monthlyIncome">Revenus mensuels nets (€)</label>
+                                    <input type="number" id="monthlyIncome" name="monthlyIncome" min="500" required placeholder="Ex: 3000">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="additionalIncome">Autres revenus mensuels (€)</label>
+                                    <input type="number" id="additionalIncome" name="additionalIncome" min="0" value="0" placeholder="Ex: 500">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="currentDebt">Dettes mensuelles actuelles (€)</label>
+                                    <input type="number" id="currentDebt" name="currentDebt" min="0" value="0" placeholder="Ex: 200">
+                                    <div class="field-info">
+                                        <span class="info-icon" title="Crédit existant">ℹ️</span>
+                                        <span class="info-text">Inclut tous vos crédits en cours</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="personalContribution">Apport personnel (€)</label>
+                                    <input type="number" id="personalContribution" name="personalContribution" min="0" value="0" placeholder="Ex: 20000">
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Paramètres du prêt</h3>
+                                
+                                <div class="form-group">
+                                    <label for="ppInterestRate">Taux d'intérêt (%)</label>
+                                    <input type="number" id="ppInterestRate" name="interestRate" min="0.1" max="15" step="0.01" required placeholder="Ex: 3.5">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="ppLoanDuration">Durée du prêt (années)</label>
+                                    <div class="range-slider">
+                                        <input type="range" id="ppLoanDuration" name="loanDuration" min="5" max="30" value="25">
+                                        <span id="ppLoanDurationValue">25 ans</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="debtRatio">Taux d'endettement maximum (%)</label>
+                                    <input type="number" id="debtRatio" name="debtRatio" min="1" max="50" value="35" required>
+                                    <div class="field-info">
+                                        <span class="info-icon" title="Taux d'endettement">ℹ️</span>
+                                        <span class="info-text">Généralement limité à 35% des revenus</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="ppNotaryFees">Frais de notaire (%)</label>
+                                    <input type="number" id="ppNotaryFees" name="notaryFees" min="1" max="10" step="0.1" value="7.5" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Localisation</h3>
+                                
+                                <div class="form-group">
+                                    <label for="ppCity">Ville</label>
+                                    <div class="select-wrapper">
+                                        <select id="ppCity" name="city" required>
+                                            <option value="" disabled selected>Sélectionnez une ville</option>
+                                            <!-- Options générées dynamiquement -->
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="ppPropertyType">Type de bien</label>
+                                    <div class="select-wrapper">
+                                        <select id="ppPropertyType" name="propertyType" required>
+                                            <option value="apartment">Appartement</option>
+                                            <option value="house">Maison</option>
+                                            <option value="studio">Studio</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="actions">
+                                <button type="submit" class="btn primary">Calculer votre pouvoir d'achat</button>
+                                <button type="reset" class="btn secondary">Réinitialiser</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="results-container" id="purchasingPowerResults">
+                        <div class="results-header">
+                            <h3>Résultats du pouvoir d'achat</h3>
+                            <div class="actions">
+                                <button id="ppExportBtn" class="btn secondary">Exporter PDF</button>
+                            </div>
+                        </div>
+                        
+                        <div class="results-overview">
+                            <div class="result-card highlight">
+                                <div class="result-value" id="borrowingCapacityResult">---</div>
+                                <div class="result-label">Capacité d'emprunt maximale</div>
+                            </div>
+                            <div class="result-card highlight">
+                                <div class="result-value" id="maxPropertyValueResult">---</div>
+                                <div class="result-label">Budget immobilier total</div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-value" id="monthlyPaymentResult">---</div>
+                                <div class="result-label">Mensualité maximale</div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-value" id="debtRatioResult">---</div>
+                                <div class="result-label">Taux d'endettement</div>
+                            </div>
+                        </div>
+                        
+                        <div class="property-possibilities">
+                            <h4>Ce que vous pouvez acheter à <span id="selectedCityDisplay">cette ville</span></h4>
+                            
+                            <div class="property-types-grid">
+                                <div class="property-type-card">
+                                    <div class="property-icon apartment"></div>
+                                    <div class="property-label">Appartement</div>
+                                    <div class="property-value" id="apartmentSizeResult">---</div>
+                                </div>
+                                <div class="property-type-card">
+                                    <div class="property-icon house"></div>
+                                    <div class="property-label">Maison</div>
+                                    <div class="property-value" id="houseSizeResult">---</div>
+                                </div>
+                                <div class="property-type-card">
+                                    <div class="property-icon studio"></div>
+                                    <div class="property-label">Studio</div>
+                                    <div class="property-value" id="studioSizeResult">---</div>
+                                </div>
+                            </div>
+                            
+                            <div class="city-comparison">
+                                <h4>Comparaison avec d'autres villes</h4>
+                                <div class="chart-container">
+                                    <canvas id="citiesComparisonChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="back-button">
+                            <button id="ppBackBtn" class="btn text">← Modifier les paramètres</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Simulateur Immobilier</h4>
+                    <p class="slogan">Simulez, analysez, décidez</p>
+                </div>
+                <div class="footer-section links">
+                    <a href="./pages/mentions-legales.html">Mentions légales</a>
+                    <span class="separator">|</span>
+                    <a href="./pages/politique-confidentialite.html">Politique de confidentialité</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="copyright">&copy; <span id="current-year">2025</span> Simulateur Immobilier | Marché Français</p>
+                <p class="disclaimer">Ce simulateur est fourni à titre informatif uniquement. Les calculs sont basés sur des estimations et ne constituent pas un conseil financier professionnel.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Met à jour l'année automatiquement
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+    
+    <!-- Templates pour les dialogues -->
+    <template id="saveScenarioTemplate">
+        <div class="modal" id="saveScenarioModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Enregistrer ce scénario</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="scenarioName">Nom du scénario</label>
+                        <input type="text" id="scenarioName" name="scenarioName" required placeholder="Ex: Appartement Paris 15e">
+                    </div>
+                    <div class="form-group">
+                        <label for="scenarioDescription">Description (optionnelle)</label>
+                        <textarea id="scenarioDescription" name="scenarioDescription" rows="3" placeholder="Ajoutez des notes ou commentaires..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelSaveBtn" class="btn secondary">Annuler</button>
+                    <button id="confirmSaveBtn" class="btn primary">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <!-- Bibliothèques externes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    
+    <!-- Scripts de l'application -->
+    <script src="js/app.js" type="module"></script>
+</body>
+</html>
