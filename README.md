@@ -1,4 +1,4 @@
-# ImmoSim_V2
+# ImmoSim
  Ensemble de simulateurs immobiliers destinés au marché français
 
  Stack : HTML / CSS / Javascript
