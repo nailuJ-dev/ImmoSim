@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImmoSim Pro | Tableau de bord</title>
+    <meta name="description" content="Plateforme professionnelle pour agents immobiliers, notaires et conseillers en investissement.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/theme.css">
+    <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <a href="index.html" class="sidebar-logo">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#4361ee"/><path d="M6 24V14l10-8 10 8v10H20v-6h-4v6H6z" fill="white"/></svg>
+            <span>ImmoSim<strong>Pro</strong></span>
+        </a>
+        <button class="sidebar-collapse" id="sidebarToggle" aria-label="Réduire le menu">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 4l-5 5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+    </div>
+
+    <div class="sidebar-user">
+        <div class="user-avatar">JD</div>
+        <div class="user-info">
+            <span class="user-name">Jean Dupont</span>
+            <span class="user-plan">Plan Pro</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">Principal</div>
+        <a class="nav-item active" data-panel="dashboard" href="#">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="1" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="10" y="1" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="1" y="10" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="10" y="10" width="7" height="7" rx="1.5" fill="currentColor"/></svg>
+            <span>Tableau de bord</span>
+        </a>
+        <a class="nav-item" data-panel="clients" href="#">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M1 17c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Clients</span>
+            <span class="nav-badge">3</span>
+        </a>
+
+        <div class="nav-section-label">Simulateurs</div>
+        <a class="nav-item" data-panel="value-simulator" href="#">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 14V8l7-5 7 5v6H12V10H6v4H2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Valeur du bien</span>
+        </a>
+        <a class="nav-item" data-panel="investment-simulator" href="#">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 14l4-4 3 3 5-6 2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Investissement locatif</span>
+        </a>
+        <a class="nav-item" data-panel="purchasing-power" href="#">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M9 5v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Pouvoir d'achat</span>
+        </a>
+        <a class="nav-item" data-panel="comparison" href="#">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="9" width="7" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="5" width="7" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M2 5l3-4 3 4M11 1l3 4 3-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Comparaison</span>
+        </a>
+
+        <div class="nav-section-label">Pro</div>
+        <a class="nav-item" data-panel="dvf" href="#">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M6 9l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Données DVF</span>
+            <span class="nav-pro-badge">Pro</span>
+        </a>
+        <a class="nav-item" data-panel="tax-optimizer" href="#">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1l2 5h5l-4 3 1.5 5L9 11l-4.5 3L6 9 2 6h5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Optimiseur fiscal</span>
+            <span class="nav-pro-badge">Pro</span>
+        </a>
+        <a class="nav-item" data-panel="market-analysis" href="#">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="8" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M1 17c2-3.5 5-5 8-5s6 1.5 8 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Analyse de marché</span>
+            <span class="nav-pro-badge">Pro</span>
+        </a>
+        <a class="nav-item" data-panel="reports" href="#">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="1" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 6h6M6 9h6M6 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Rapports PDF</span>
+            <span class="nav-pro-badge">Pro</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a href="#" class="nav-item">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Paramètres</span>
+        </a>
+        <a href="index.html" class="nav-item">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 15H3a1 1 0 01-1-1V4a1 1 0 011-1h4M12 13l4-4-4-4M16 9H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Retour au site</span>
+        </a>
+    </div>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main-wrapper">
+    <!-- Top bar -->
+    <header class="topbar">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Ouvrir le menu">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="topbar-breadcrumb">
+            <span id="currentSectionLabel">Tableau de bord</span>
+        </div>
+        <div class="topbar-actions">
+            <button class="topbar-btn" id="themeToggle" aria-label="Changer de thème">
+                <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <button class="topbar-btn" aria-label="Notifications">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1a5 5 0 015 5c0 3 1 4 2 5H2c1-1 2-2 2-5a5 5 0 015-5zM7 15a2 2 0 004 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+            <a href="index.html#tarifs" class="upgrade-btn">Passer à Pro</a>
+        </div>
+    </header>
+
+    <!-- ===== PANELS ===== -->
+    <main class="content-area" id="contentArea">
+
+        <!-- ===== DASHBOARD PANEL ===== -->
+        <section class="panel active" id="panel-dashboard">
+            <div class="panel-header">
+                <h1>Bonjour Jean 👋</h1>
+                <p>Voici un résumé de votre activité du mois</p>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-blue">
+                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 18V8l9-6 9 6v10H14v-5H8v5H2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Simulations ce mois</span>
+                        <span class="kpi-value">12</span>
+                        <span class="kpi-trend positive">+3 vs mois dernier</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-green">
+                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M2 21c0-5 4-9 9-9s9 4 9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Clients actifs</span>
+                        <span class="kpi-value">8</span>
+                        <span class="kpi-trend positive">+2 nouveaux</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-purple">
+                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="2" width="16" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 8h8M7 11h8M7 14h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Rapports générés</span>
+                        <span class="kpi-value">4</span>
+                        <span class="kpi-trend neutral">Ce mois</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-orange">
+                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 18l5-5 4 4 5-7 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-label">Rentabilité moy.</span>
+                        <span class="kpi-value">5,8%</span>
+                        <span class="kpi-trend positive">Net-net</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Activité récente</h3>
+                        <button class="card-action" data-panel="clients">Voir tout</button>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon green">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 10V6l5-4 5 4v4H9V7H5v3H2z" fill="currentColor"/></svg>
+                            </div>
+                            <div class="activity-content">
+                                <strong>Simulation valeur</strong>
+                                <span>75m² à Lyon 3e — Mme Martin</span>
+                            </div>
+                            <span class="activity-time">il y a 2h</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon blue">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 11l3-3 2 2 3-4 2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            </div>
+                            <div class="activity-content">
+                                <strong>Rentabilité locative</strong>
+                                <span>Studio 28m² Paris 11e — M. Dubois</span>
+                            </div>
+                            <span class="activity-time">hier</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon purple">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1.5" fill="currentColor"/></svg>
+                            </div>
+                            <div class="activity-content">
+                                <strong>Rapport PDF généré</strong>
+                                <span>Analyse investissement — Fam. Leroux</span>
+                            </div>
+                            <span class="activity-time">il y a 3j</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon orange">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M5 7l2 2 2-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            </div>
+                            <div class="activity-content">
+                                <strong>Analyse DVF</strong>
+                                <span>Secteur Bordeaux Caudéran — M. Blanc</span>
+                            </div>
+                            <span class="activity-time">il y a 5j</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Accès rapide</h3>
+                    </div>
+                    <div class="quick-access-grid">
+                        <button class="quick-btn" data-panel="value-simulator">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 19V9l9-6 9 6v10H15V13H9v6H3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            Simuler une valeur
+                        </button>
+                        <button class="quick-btn" data-panel="investment-simulator">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 19l5-5 4 4 5-7 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Simuler un invest.
+                        </button>
+                        <button class="quick-btn" data-panel="dvf">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            Recherche DVF
+                        </button>
+                        <button class="quick-btn" data-panel="tax-optimizer">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 7h6l-5 4 2 7-6-4-6 4 2-7-5-4h6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Optimiser la fiscalité
+                        </button>
+                        <button class="quick-btn" data-panel="clients">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M3 22c0-5.5 4-9 9-9s9 3.5 9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            Nouveau client
+                        </button>
+                        <button class="quick-btn" data-panel="reports">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="16" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            Créer un rapport
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card full-width">
+                    <div class="card-header">
+                        <h3>Données de marché — Villes clés</h3>
+                        <span class="card-badge">Actualisé mensuel</span>
+                    </div>
+                    <div class="market-table-wrapper">
+                        <table class="market-table">
+                            <thead>
+                                <tr>
+                                    <th>Ville</th>
+                                    <th>Prix/m² moy.</th>
+                                    <th>Évolution 12 mois</th>
+                                    <th>Loyer moy./m²</th>
+                                    <th>Rendement brut</th>
+                                    <th>Tension locative</th>
+                                </tr>
+                            </thead>
+                            <tbody id="marketTableBody">
+                                <!-- Rempli dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CLIENTS PANEL ===== -->
+        <section class="panel" id="panel-clients">
+            <div class="panel-header">
+                <h1>Portefeuille Clients</h1>
+                <button class="btn-panel-action" id="addClientBtn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    Nouveau client
+                </button>
+            </div>
+            <div class="clients-toolbar">
+                <input type="search" id="clientSearch" placeholder="Rechercher un client..." class="search-input">
+                <div class="filter-group">
+                    <select class="filter-select" id="clientStatusFilter">
+                        <option value="">Tous les statuts</option>
+                        <option value="prospect">Prospect</option>
+                        <option value="active">En cours</option>
+                        <option value="closed">Conclu</option>
+                    </select>
+                </div>
+            </div>
+            <div class="clients-grid" id="clientsGrid">
+                <!-- Clients générés dynamiquement -->
+            </div>
+            <!-- Modal ajout client -->
+            <div class="modal-overlay" id="clientModal">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h3 id="clientModalTitle">Nouveau client</h3>
+                        <button class="modal-close" id="clientModalClose">×</button>
+                    </div>
+                    <form id="clientForm" class="modal-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="clientFirstName">Prénom</label>
+                                <input type="text" id="clientFirstName" placeholder="Marie" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="clientLastName">Nom</label>
+                                <input type="text" id="clientLastName" placeholder="Dupont" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="clientEmail">Email</label>
+                                <input type="email" id="clientEmail" placeholder="marie@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="clientPhone">Téléphone</label>
+                                <input type="tel" id="clientPhone" placeholder="06 12 34 56 78">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="clientStatus">Statut</label>
+                                <select id="clientStatus">
+                                    <option value="prospect">Prospect</option>
+                                    <option value="active">En cours</option>
+                                    <option value="closed">Conclu</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="clientType">Type</label>
+                                <select id="clientType">
+                                    <option value="buyer">Acquéreur</option>
+                                    <option value="seller">Vendeur</option>
+                                    <option value="investor">Investisseur</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group full">
+                            <label for="clientNotes">Notes</label>
+                            <textarea id="clientNotes" rows="3" placeholder="Budget, projet, préférences..."></textarea>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn-modal-cancel" id="clientModalCancel">Annuler</button>
+                            <button type="submit" class="btn-modal-save">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== VALUE SIMULATOR PANEL ===== -->
+        <section class="panel" id="panel-value-simulator">
+            <div class="panel-header">
+                <h1>Simulateur d'Évolution de Valeur</h1>
+                <div class="panel-actions">
+                    <button class="btn-panel-action secondary" id="valueSaveBtn">Enregistrer</button>
+                    <button class="btn-panel-action" id="valueExportBtn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="14" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 6h6M5 9h6M5 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        Export PDF
+                    </button>
+                </div>
+            </div>
+            <div class="simulator-layout">
+                <div class="sim-form-col">
+                    <form id="valueForm" class="sim-form">
+                        <div class="form-section">
+                            <h3>Localisation</h3>
+                            <div class="map-selection-container">
+                                <div id="cityMap" class="city-map"></div>
+                                <div class="map-legend">
+                                    <span class="legend-item"><span class="color-box high"></span>Forte croissance</span>
+                                    <span class="legend-item"><span class="color-box medium"></span>Modérée</span>
+                                    <span class="legend-item"><span class="color-box low"></span>Faible</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="valueCity">Ville</label>
+                                <div class="select-wrapper">
+                                    <select id="valueCity" name="city" required>
+                                        <option value="" disabled selected>Sélectionnez une ville</option>
+                                    </select>
+                                </div>
+                                <div class="field-info">
+                                    <span id="cityPriceInfo" class="info-text"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3>Caractéristiques du bien</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="propertyType">Type de bien</label>
+                                    <div class="select-wrapper">
+                                        <select id="propertyType" name="propertyType" required>
+                                            <option value="apartment">Appartement</option>
+                                            <option value="house">Maison</option>
+                                            <option value="studio">Studio</option>
+                                            <option value="loft">Loft</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="propertyAge">Âge du bien</label>
+                                    <div class="select-wrapper">
+                                        <select id="propertyAge" name="propertyAge" required>
+                                            <option value="new">Neuf (&lt; 5 ans)</option>
+                                            <option value="recent">Récent (5-15 ans)</option>
+                                            <option value="old">Ancien (15-50 ans)</option>
+                                            <option value="veryOld">Très ancien (&gt; 50 ans)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="area">Surface (m²)</label>
+                                    <input type="number" id="area" name="area" min="9" max="1000" required placeholder="Ex: 75">
+                                </div>
+                                <div class="form-group">
+                                    <label for="rooms">Nombre de pièces</label>
+                                    <input type="number" id="rooms" name="rooms" min="1" max="20" required placeholder="Ex: 3">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="currentValue">Valeur actuelle estimée (€)</label>
+                                <input type="number" id="currentValue" name="currentValue" min="10000" required placeholder="Ex: 250 000">
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3>Paramètres de simulation</h3>
+                            <div class="form-group">
+                                <label for="projectionYears">Période de projection — <span id="projectionYearsValue">10 ans</span></label>
+                                <div class="range-slider">
+                                    <input type="range" id="projectionYears" name="projectionYears" min="1" max="30" value="10">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="renovationBudget">Budget rénovation (€)</label>
+                                <input type="number" id="renovationBudget" name="renovationBudget" min="0" value="0" placeholder="Ex: 15 000">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-sim-submit">Simuler l'évolution</button>
+                            <button type="reset" class="btn-sim-reset">Réinitialiser</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="sim-results-col results-container" id="valueResults">
+                    <div class="results-overview">
+                        <div class="result-card">
+                            <div class="result-value" id="initialValueResult">---</div>
+                            <div class="result-label">Valeur initiale</div>
+                        </div>
+                        <div class="result-card highlight">
+                            <div class="result-value" id="finalValueResult">---</div>
+                            <div class="result-label">Valeur estimée finale</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-value" id="valueGrowthResult">---</div>
+                            <div class="result-label">Évolution totale</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-value" id="annualGrowthResult">---</div>
+                            <div class="result-label">Évolution annuelle</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="valueChart"></canvas>
+                    </div>
+                    <div class="factors-container">
+                        <h4>Facteurs d'influence</h4>
+                        <div id="factorsGrid" class="factors-grid"></div>
+                    </div>
+                    <button id="valueBackBtn" class="btn-back">← Modifier les paramètres</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== INVESTMENT SIMULATOR PANEL ===== -->
+        <section class="panel" id="panel-investment-simulator">
+            <div class="panel-header">
+                <h1>Simulateur d'Investissement Locatif</h1>
+                <div class="panel-actions">
+                    <button class="btn-panel-action secondary" id="investSaveBtn">Enregistrer</button>
+                    <button class="btn-panel-action" id="investExportBtn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="14" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 6h6M5 9h6M5 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        Export PDF
+                    </button>
+                </div>
+            </div>
+            <div class="simulator-layout">
+                <div class="sim-form-col">
+                    <form id="investmentForm" class="sim-form">
+                        <div class="form-section">
+                            <h3>Bien immobilier</h3>
+                            <div class="form-group">
+                                <label for="investCity">Ville</label>
+                                <div class="select-wrapper">
+                                    <select id="investCity" name="city" required>
+                                        <option value="" disabled selected>Sélectionnez une ville</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="purchasePrice">Prix d'achat (€)</label>
+                                    <input type="number" id="purchasePrice" name="purchasePrice" min="10000" required placeholder="Ex: 250 000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="investArea">Surface (m²)</label>
+                                    <input type="number" id="investArea" name="area" min="9" max="1000" required placeholder="Ex: 75">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="investPropertyType">Type de bien</label>
+                                    <div class="select-wrapper">
+                                        <select id="investPropertyType" name="propertyType" required>
+                                            <option value="apartment">Appartement</option>
+                                            <option value="house">Maison</option>
+                                            <option value="studio">Studio</option>
+                                            <option value="loft">Loft</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="renovationCost">Travaux (€)</label>
+                                    <input type="number" id="renovationCost" name="renovationCost" min="0" value="0" placeholder="Ex: 15 000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="isFurnished" name="isFurnished">
+                                    <span>Bien meublé (LMNP possible)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3>Financement</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="downPayment">Apport personnel (€)</label>
+                                    <input type="number" id="downPayment" name="downPayment" min="0" required placeholder="Ex: 50 000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="loanAmount">Montant du prêt (€)</label>
+                                    <input type="number" id="loanAmount" name="loanAmount" min="0" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="interestRate">Taux d'intérêt (%)</label>
+                                    <input type="number" id="interestRate" name="interestRate" min="0.1" max="15" step="0.01" required placeholder="Ex: 3.5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="loanDuration">Durée — <span id="loanDurationValue">20 ans</span></label>
+                                    <div class="range-slider">
+                                        <input type="range" id="loanDuration" name="loanDuration" min="5" max="30" value="20">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="notaryFees">Frais de notaire (%)</label>
+                                <input type="number" id="notaryFees" name="notaryFees" min="1" max="10" step="0.1" value="7.5" required>
+                                <span class="field-hint">7-8% pour l'ancien, 2-3% pour le neuf</span>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3>Revenus locatifs</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="monthlyRent">Loyer mensuel (€)</label>
+                                    <input type="number" id="monthlyRent" name="monthlyRent" min="100" required placeholder="Ex: 800">
+                                </div>
+                                <div class="form-group">
+                                    <label for="vacancyRate">Vacance locative (%)</label>
+                                    <input type="number" id="vacancyRate" name="vacancyRate" min="0" max="100" step="0.1" value="5" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="unpaidRate">Taux d'impayés (%)</label>
+                                    <input type="number" id="unpaidRate" name="unpaidRate" min="0" max="100" step="0.1" value="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rentIncrease">Revalorisation annuelle (%)</label>
+                                    <input type="number" id="rentIncrease" name="rentIncrease" min="0" max="10" step="0.1" value="1.5" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3>Charges & Fiscalité</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="managementFees">Frais de gestion (%)</label>
+                                    <input type="number" id="managementFees" name="managementFees" min="0" max="20" step="0.1" value="0" placeholder="Ex: 7">
+                                </div>
+                                <div class="form-group">
+                                    <label for="propertyTax">Taxe foncière (€/an)</label>
+                                    <input type="number" id="propertyTax" name="propertyTax" min="0" required placeholder="Ex: 1 200">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="condoFees">Charges copro (€/an)</label>
+                                    <input type="number" id="condoFees" name="condoFees" min="0" required placeholder="Ex: 1 800">
+                                </div>
+                                <div class="form-group">
+                                    <label for="maintenanceCost">Provision travaux (%)</label>
+                                    <input type="number" id="maintenanceCost" name="maintenanceCost" min="0" max="20" step="0.1" value="5" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="fiscalRegime">Régime fiscal</label>
+                                    <div class="select-wrapper">
+                                        <select id="fiscalRegime" name="fiscalRegime" required>
+                                            <option value="microFoncier">Micro-foncier (abatt. 30%)</option>
+                                            <option value="reel">Régime réel</option>
+                                            <option value="lmnp">LMNP</option>
+                                            <option value="bic">BIC (micro)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="taxBracket">Tranche marginale (TMI)</label>
+                                    <div class="select-wrapper">
+                                        <select id="taxBracket" name="taxBracket" required>
+                                            <option value="0">0% — Non imposable</option>
+                                            <option value="11">11% — 1re tranche</option>
+                                            <option value="30">30% — 2e tranche</option>
+                                            <option value="41">41% — 3e tranche</option>
+                                            <option value="45">45% — 4e tranche</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-sim-submit">Calculer la rentabilité</button>
+                            <button type="reset" class="btn-sim-reset">Réinitialiser</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="sim-results-col results-container" id="investmentResults">
+                    <div class="results-overview">
+                        <div class="result-card"><div class="result-value" id="totalInvestmentResult">---</div><div class="result-label">Investissement total</div></div>
+                        <div class="result-card highlight"><div class="result-value" id="rentabilityResult">---</div><div class="result-label">Rentabilité brute</div></div>
+                        <div class="result-card highlight"><div class="result-value" id="netRentabilityResult">---</div><div class="result-label">Rentabilité nette</div></div>
+                        <div class="result-card"><div class="result-value" id="cashflowResult">---</div><div class="result-label">Cash-flow mensuel</div></div>
+                        <div class="result-card"><div class="result-value" id="monthlyPaymentResult2">---</div><div class="result-label">Mensualité crédit</div></div>
+                        <div class="result-card"><div class="result-value" id="annualTaxResult">---</div><div class="result-label">Fiscalité annuelle</div></div>
+                    </div>
+                    <div class="sub-tabs">
+                        <button class="tab-btn active" data-tab="cashflow-tab">Cash-flow</button>
+                        <button class="tab-btn" data-tab="amortization-tab">Amortissement</button>
+                        <button class="tab-btn" data-tab="projection-tab">Projection 20 ans</button>
+                    </div>
+                    <div class="tab-content active" id="cashflow-tab">
+                        <div class="chart-container"><canvas id="cashflowChart"></canvas></div>
+                    </div>
+                    <div class="tab-content" id="amortization-tab">
+                        <div class="chart-container"><canvas id="amortizationChart"></canvas></div>
+                    </div>
+                    <div class="tab-content" id="projection-tab">
+                        <div class="chart-container"><canvas id="projectionChart"></canvas></div>
+                    </div>
+                    <button id="investBackBtn" class="btn-back">← Modifier les paramètres</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PURCHASING POWER PANEL ===== -->
+        <section class="panel" id="panel-purchasing-power">
+            <div class="panel-header">
+                <h1>Calculateur de Pouvoir d'Achat</h1>
+                <button class="btn-panel-action" id="ppExportBtn">Export PDF</button>
+            </div>
+            <div class="simulator-layout">
+                <div class="sim-form-col">
+                    <form id="purchasingPowerForm" class="sim-form">
+                        <div class="form-section">
+                            <h3>Localisation</h3>
+                            <div class="form-group">
+                                <label for="ppCity">Ville cible</label>
+                                <div class="select-wrapper">
+                                    <select id="ppCity" name="city" required>
+                                        <option value="" disabled selected>Sélectionnez une ville</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3>Revenus & endettement</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ppMonthlyIncome">Revenus nets/mois (€)</label>
+                                    <input type="number" id="ppMonthlyIncome" name="monthlyIncome" min="500" required placeholder="Ex: 3 500">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ppAdditionalIncome">Revenus complémentaires (€)</label>
+                                    <input type="number" id="ppAdditionalIncome" name="additionalIncome" min="0" value="0" placeholder="Ex: 500">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ppCurrentDebt">Charges mensuelles existantes (€)</label>
+                                <input type="number" id="ppCurrentDebt" name="currentDebt" min="0" value="0" placeholder="Ex: 300">
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3>Financement</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ppPersonalContribution">Apport personnel (€)</label>
+                                    <input type="number" id="ppPersonalContribution" name="personalContribution" min="0" value="0" placeholder="Ex: 30 000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ppInterestRate">Taux d'intérêt (%)</label>
+                                    <input type="number" id="ppInterestRate" name="interestRate" min="0.1" max="15" step="0.01" required placeholder="Ex: 3.5">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ppLoanDuration">Durée (années)</label>
+                                    <input type="number" id="ppLoanDuration" name="loanDuration" min="5" max="30" value="20">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ppDebtRatio">Taux d'endettement max (%)</label>
+                                    <input type="number" id="ppDebtRatio" name="debtRatio" min="1" max="40" step="0.1" value="35">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ppNotaryFees">Frais de notaire (%)</label>
+                                    <input type="number" id="ppNotaryFees" name="notaryFees" min="1" max="10" step="0.1" value="7.5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ppPropertyType">Type de bien</label>
+                                    <div class="select-wrapper">
+                                        <select id="ppPropertyType" name="propertyType">
+                                            <option value="apartment">Appartement</option>
+                                            <option value="house">Maison</option>
+                                            <option value="studio">Studio</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-sim-submit">Calculer mon pouvoir d'achat</button>
+                            <button type="reset" class="btn-sim-reset">Réinitialiser</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="sim-results-col results-container" id="purchasingPowerResults">
+                    <div class="results-overview">
+                        <div class="result-card highlight"><div class="result-value" id="borrowingCapacityResult">---</div><div class="result-label">Capacité d'emprunt</div></div>
+                        <div class="result-card"><div class="result-value" id="maxPropertyValueResult">---</div><div class="result-label">Budget total</div></div>
+                        <div class="result-card"><div class="result-value" id="monthlyPaymentResult">---</div><div class="result-label">Mensualité max.</div></div>
+                        <div class="result-card"><div class="result-value" id="debtRatioResult">---</div><div class="result-label">Taux d'endettement</div></div>
+                    </div>
+                    <h4>Surface accessible à <span id="selectedCityDisplay">la ville sélectionnée</span></h4>
+                    <div class="property-possibilities">
+                        <div class="property-type-result">
+                            <div class="property-icon apartment"></div>
+                            <span class="property-type-name">Appartement</span>
+                            <span class="property-size" id="apartmentSizeResult">---</span>
+                        </div>
+                        <div class="property-type-result">
+                            <div class="property-icon house"></div>
+                            <span class="property-type-name">Maison</span>
+                            <span class="property-size" id="houseSizeResult">---</span>
+                        </div>
+                        <div class="property-type-result">
+                            <div class="property-icon studio"></div>
+                            <span class="property-type-name">Studio</span>
+                            <span class="property-size" id="studioSizeResult">---</span>
+                        </div>
+                    </div>
+                    <h4>Comparaison des villes</h4>
+                    <div class="chart-container"><canvas id="citiesComparisonChart"></canvas></div>
+                    <button id="ppBackBtn" class="btn-back">← Modifier les paramètres</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== COMPARISON PANEL ===== -->
+        <section class="panel" id="panel-comparison">
+            <div class="panel-header">
+                <h1>Comparaison de Scénarios</h1>
+            </div>
+            <div id="comparisonContent" class="comparison-content">
+                <!-- Généré par comparison.js -->
+            </div>
+        </section>
+
+        <!-- ===== DVF PANEL ===== -->
+        <section class="panel" id="panel-dvf">
+            <div class="panel-header">
+                <h1>Données DVF — Valeurs Foncières</h1>
+                <span class="panel-badge pro">Pro</span>
+            </div>
+            <div class="dvf-layout" id="dvfLayout">
+                <!-- Généré par dvfData.js -->
+            </div>
+        </section>
+
+        <!-- ===== TAX OPTIMIZER PANEL ===== -->
+        <section class="panel" id="panel-tax-optimizer">
+            <div class="panel-header">
+                <h1>Optimiseur Fiscal</h1>
+                <span class="panel-badge pro">Pro</span>
+            </div>
+            <div id="taxOptimizerContent">
+                <!-- Généré par taxOptimizer.js -->
+            </div>
+        </section>
+
+        <!-- ===== MARKET ANALYSIS PANEL ===== -->
+        <section class="panel" id="panel-market-analysis">
+            <div class="panel-header">
+                <h1>Analyse de Marché</h1>
+                <span class="panel-badge pro">Pro</span>
+            </div>
+            <div id="marketAnalysisContent">
+                <!-- Généré par marketAnalysis.js -->
+            </div>
+        </section>
+
+        <!-- ===== REPORTS PANEL ===== -->
+        <section class="panel" id="panel-reports">
+            <div class="panel-header">
+                <h1>Rapports PDF Professionnels</h1>
+                <span class="panel-badge pro">Pro</span>
+            </div>
+            <div id="reportsContent">
+                <!-- Généré par reportGenerator.js -->
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- External Libraries -->
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script type="module" src="./js/dashboard.js"></script>
+</body>
+</html>
